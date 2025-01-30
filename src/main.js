@@ -1,9 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const sceneEl = document.querySelector("a-scene");
     const modelEntity = document.getElementById("chairModel");
 
-    if (!sceneEl || !modelEntity) {
-        console.error("Scene or model entity not found.");
+    if (!modelEntity) {
+        console.error("Model entity not found.");
         return;
     }
 
@@ -16,9 +15,10 @@ document.addEventListener("DOMContentLoaded", function () {
         './chair.glb', 
         function (gltf) {
             let model = gltf.scene;
-            model.scale.set(1, 1, 1); // Adjust size if needed
-            model.position.set(0, 0, 0); // Adjust placement
-            model.rotation.y = Math.PI; // Rotate for proper orientation
+            // Adjust these values to make the model visible and properly sized
+            model.scale.set(0.1, 0.1, 0.1); // Made smaller
+            model.position.set(0, 0.5, 0); // Lifted slightly above marker
+            model.rotation.x = -Math.PI / 2; // Rotate to face up
 
             modelEntity.object3D.add(model);
             console.log("Model loaded successfully");
