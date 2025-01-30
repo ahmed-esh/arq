@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const loader = new THREE.GLTFLoader();
 
     loader.load(
-        './chair.glb', 
+        'https://raw.githubusercontent.com/ahmed-esh/arq/main/public/chair.glb',  // Updated model path
         function (gltf) {
             let model = gltf.scene;
             // Adjust these values to make the model visible and properly sized
@@ -31,3 +31,4 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     );
 });
+
