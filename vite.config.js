@@ -3,7 +3,10 @@ export default {
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
-    // Copy files from public to dist
-    copyPublicDir: true
+    rollupOptions: {
+      input: {
+        main: './index.html'
+      }
+    }
   }
 } 
