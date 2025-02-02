@@ -3,43 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR Chair Viewer</title>
+    <title>AR Furniture Placement</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <script src="https://unpkg.com/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
 </head>
-<body style="margin: 0; overflow: hidden;">
-    
+<body>
     <a-scene
-        embedded
-        arjs="sourceType: webcam; 
-              debugUIEnabled: false;
-              detectionMode: mono_and_matrix;
-              matrixCodeType: 3x3;
-              sourceWidth: 1280;
-              sourceHeight: 960;
-              displayWidth: 1280;
-              displayHeight: 960;"
-        vr-mode-ui="enabled: false;"
-        renderer="logarithmicDepthBuffer: true;"
-        >
-        
-        <a-marker preset="hiro">
-            <a-entity 
-                id="chairModel"
-                position="0 0 0"
-                scale="1 1 1"
-                rotation="0 0 0">
-            </a-entity>
-        </a-marker>
+        webxr="optionalFeatures: hit-test, local-floor, dom-overlay, bounded-floor;"
+        renderer="colorManagement: true;"
+        environment
+        cursor="rayOrigin: mouse"
+        raycaster="objects: .clickable"
+        ar-hit-test="target:#chair-model;">
 
-        <a-entity camera></a-entity>
+        <!-- Asset Management System -->
+        <a-assets>
+            <a-asset-item id="chair-model" src="https://raw.githubusercontent.com/ahmed-esh/arq/main/public/chair.glb"></a-asset-item>
+        </a-assets>
+
+        <!-- Environment -->
+        <a-entity light="type: ambient; intensity: 1;"></a-entity>
+        <a-entity light="type: directional; intensity: 0.8;" position="-1 1 0"></a-entity>
+
+        <!-- Reticle for placement -->
+        <a-entity id="reticle" 
+                  gltf-model="https://raw.githubusercontent.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
+                  scale="0.01 0.01 0.01"
+                  visible="false"></a-entity>
+
+        <!-- Camera -->
+        <a-entity camera position="0 1.6 0" look-controls="enabled: false"></a-entity>
     </a-scene>
 
-    <script type="module" src="src/main.js"></script>
-
-    <div style="position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); background: white; padding: 10px;">
-        Point your camera at a Hiro marker
+    <!-- UI Overlay -->
+    <div id="overlay">
+        <button id="place-button" style="display: none;">Place Furniture</button>
+        <div id="instructions">Scan the floor to place furniture</div>
     </div>
+
+    <script type="module" src="src/main.js"></script>
 </body>
 </html>
