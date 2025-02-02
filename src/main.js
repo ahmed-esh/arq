@@ -1,3 +1,5 @@
+console.log('AR Hit Test component registered');
+
 AFRAME.registerComponent('ar-hit-test', {
     schema: {
         target: {type: 'selector'}
@@ -69,8 +71,11 @@ AFRAME.registerComponent('ar-hit-test', {
     placeFurniture: function () {
         if (this.placed) return;
 
+        console.log('Placing furniture...');
+        
         // Get reticle position
         const position = this.reticle.getAttribute('position');
+        console.log('Reticle position:', position);
         
         // Create new furniture entity
         const furniture = document.createElement('a-entity');
@@ -79,6 +84,17 @@ AFRAME.registerComponent('ar-hit-test', {
         furniture.setAttribute('scale', '0.1 0.1 0.1');
         furniture.setAttribute('class', 'clickable');
         furniture.setAttribute('draggable', '');
+        furniture.setAttribute('shadow', 'cast: true');
+        
+        // Add load event listener
+        furniture.addEventListener('model-loaded', () => {
+            console.log('Model loaded successfully');
+        });
+        
+        // Add error event listener
+        furniture.addEventListener('model-error', (error) => {
+            console.error('Error loading model:', error);
+        });
         
         this.el.sceneEl.appendChild(furniture);
         
@@ -87,6 +103,8 @@ AFRAME.registerComponent('ar-hit-test', {
         this.placeButton.style.display = 'none';
         this.placed = true;
 
+        console.log('Furniture entity added to scene');
+        
         // Show placement success message
         document.getElementById('instructions').textContent = 'Furniture placed! You can drag to move it.';
     }
