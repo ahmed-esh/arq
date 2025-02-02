@@ -77,9 +77,9 @@ AFRAME.registerComponent('ar-hit-test', {
         const position = this.reticle.getAttribute('position');
         console.log('Reticle position:', position);
         
-        // Create new furniture entity
+        // Create new furniture entity with the correct path
         const furniture = document.createElement('a-entity');
-        furniture.setAttribute('gltf-model', this.data.target.getAttribute('src'));
+        furniture.setAttribute('gltf-model', '#chair-model'); // Use the asset ID instead of direct URL
         furniture.setAttribute('position', position);
         furniture.setAttribute('scale', '0.1 0.1 0.1');
         furniture.setAttribute('class', 'clickable');
