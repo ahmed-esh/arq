@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Furniture Placement</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+  <script type="module" crossorigin src="/arq/assets/index-DHcd64-Z.js"></script>
+</head>
+<body>
+    <a-scene
+        webxr="requiredFeatures: hit-test,local-floor;"
+        renderer="colorManagement: true; physicallyCorrectLights: true;"
+        cursor="rayOrigin: mouse"
+        raycaster="objects: .clickable"
+        ar-hit-test="target:#chair-model;">
+
+        <!-- Asset Management System -->
+        <a-assets>
+            <a-asset-item id="chair-model" src="chair.glb"></a-asset-item>
+            <a-asset-item id="reticle-model" src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/examples/image-tracking/nft/trex/scene.gltf"></a-asset-item>
+        </a-assets>
+
+        <!-- Environment -->
+        <a-entity light="type: ambient; intensity: 1;"></a-entity>
+        <a-entity light="type: directional; intensity: 0.8; castShadow: true;" position="-1 1 0"></a-entity>
+
+        <!-- Reticle for placement -->
+        <a-entity 
+            id="reticle"
+            gltf-model="#reticle-model"
+            scale="0.01 0.01 0.01"
+            visible="false"
+            shadow="receive: true">
+        </a-entity>
+
+        <!-- Ground plane for shadow -->
+        <a-plane 
+            position="0 0 0" 
+            rotation="-90 0 0" 
+            width="100" 
+            height="100" 
+            visible="false" 
+            shadow="receive: true">
+        </a-plane>
+
+        <!-- Camera -->
+        <a-entity camera position="0 1.6 0" look-controls="enabled: false"></a-entity>
+    </a-scene>
+
+    <!-- UI Overlay -->
+    <div id="overlay">
+        <button id="place-button" style="display: none;">Place Furniture</button>
+        <div id="instructions">Scan the floor to place furniture</div>
+    </div>
+
+
+    <!-- Add AR session check -->
+    <script>
+        if ('xr' in navigator) {
+            navigator.xr.isSessionSupported('immersive-ar')
+                .then((supported) => {
+                    if (!supported) {
+                        document.getElementById('instructions').textContent = 
+                            'WebXR AR not supported on this device/browser';
+                    }
+                })
+                .catch(err => {
+                    console.error('Error checking AR support:', err);
+                    document.getElementById('instructions').textContent = 
+                        'Error checking AR support';
+                });
+        } else {
+            document.getElementById('instructions').textContent = 
+                'WebXR not supported on this device/browser';
+        }
+    </script>
+</body>
+</html>
